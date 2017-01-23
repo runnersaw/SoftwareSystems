@@ -4,13 +4,19 @@
 #define END_CHAR 'X'
 #define END_FLAG -2
 
+int x = 5;
+
 /*
 This function prompts the user for a card name,
 and will store it in the given card_name buffer.
 */
 void get_card_name(char card_name[]) {
   puts("Enter the card name: ");
-  scanf("%2s", card_name);
+  int code = scanf("%2s", card_name);
+  // Found at http://stackoverflow.com/a/7271983/5224196
+  if (code != 1) {
+    puts("Failed to read integer.\n");
+  }
 }
 
 /*
