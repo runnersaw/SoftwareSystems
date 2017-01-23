@@ -1,5 +1,5 @@
 	.file	"cards.c"
-	.section	.rodata.str1.1,"aMS",@progbits,1
+	.section	.rodata
 .LC0:
 	.string	"Enter the card name: "
 .LC1:
@@ -7,209 +7,215 @@
 .LC2:
 	.string	"Failed to read integer.\n"
 	.text
-	.p2align 4,,15
 	.globl	get_card_name
 	.type	get_card_name, @function
 get_card_name:
-.LFB39:
+.LFB2:
 	.cfi_startproc
-	pushq	%rbx
+	pushq	%rbp
 	.cfi_def_cfa_offset 16
-	.cfi_offset 3, -16
-	movq	%rdi, %rbx
+	.cfi_offset 6, -16
+	movq	%rsp, %rbp
+	.cfi_def_cfa_register 6
+	subq	$32, %rsp
+	movq	%rdi, -24(%rbp)
 	movl	$.LC0, %edi
 	call	puts
-	xorl	%eax, %eax
-	movq	%rbx, %rsi
+	movq	-24(%rbp), %rax
+	movq	%rax, %rsi
 	movl	$.LC1, %edi
+	movl	$0, %eax
 	call	__isoc99_scanf
-	cmpl	$1, %eax
+	movl	%eax, -4(%rbp)
+	cmpl	$1, -4(%rbp)
 	je	.L1
-	popq	%rbx
-	.cfi_remember_state
-	.cfi_def_cfa_offset 8
 	movl	$.LC2, %edi
-	jmp	puts
-	.p2align 4,,10
-	.p2align 3
+	call	puts
 .L1:
-	.cfi_restore_state
-	popq	%rbx
-	.cfi_def_cfa_offset 8
+	leave
+	.cfi_def_cfa 7, 8
 	ret
 	.cfi_endproc
-.LFE39:
+.LFE2:
 	.size	get_card_name, .-get_card_name
-	.p2align 4,,15
 	.globl	get_val
 	.type	get_val, @function
 get_val:
-.LFB40:
+.LFB3:
 	.cfi_startproc
-	subq	$8, %rsp
+	pushq	%rbp
 	.cfi_def_cfa_offset 16
-	movzbl	(%rdi), %eax
+	.cfi_offset 6, -16
+	movq	%rsp, %rbp
+	.cfi_def_cfa_register 6
+	subq	$32, %rsp
+	movq	%rdi, -24(%rbp)
+	movq	-24(%rbp), %rax
+	movzbl	(%rax), %eax
+	movsbl	%al, %eax
 	subl	$65, %eax
-	cmpb	$23, %al
-	ja	.L6
-	movzbl	%al, %eax
-	jmp	*.L8(,%rax,8)
+	cmpl	$23, %eax
+	ja	.L4
+	movl	%eax, %eax
+	movq	.L6(,%rax,8), %rax
+	jmp	*%rax
 	.section	.rodata
 	.align 8
 	.align 4
-.L8:
-	.quad	.L11
-	.quad	.L6
-	.quad	.L6
-	.quad	.L6
-	.quad	.L6
-	.quad	.L6
-	.quad	.L6
-	.quad	.L6
-	.quad	.L6
-	.quad	.L9
-	.quad	.L9
-	.quad	.L6
-	.quad	.L6
-	.quad	.L6
-	.quad	.L6
-	.quad	.L6
-	.quad	.L9
-	.quad	.L6
-	.quad	.L6
-	.quad	.L6
-	.quad	.L6
-	.quad	.L6
-	.quad	.L6
-	.quad	.L10
-	.text
-	.p2align 4,,10
-	.p2align 3
-.L11:
-	movl	$11, %eax
-	addq	$8, %rsp
-	.cfi_remember_state
-	.cfi_def_cfa_offset 8
-	ret
-	.p2align 4,,10
-	.p2align 3
-.L10:
-	.cfi_restore_state
-	movl	$-2, %eax
-	addq	$8, %rsp
-	.cfi_remember_state
-	.cfi_def_cfa_offset 8
-	ret
-	.p2align 4,,10
-	.p2align 3
-.L9:
-	.cfi_restore_state
-	movl	$10, %eax
-	addq	$8, %rsp
-	.cfi_remember_state
-	.cfi_def_cfa_offset 8
-	ret
-	.p2align 4,,10
-	.p2align 3
 .L6:
-	.cfi_restore_state
-	movl	$10, %edx
-	xorl	%esi, %esi
-	call	strtol
-	leal	-1(%rax), %ecx
-	movq	%rax, %rdx
+	.quad	.L5
+	.quad	.L4
+	.quad	.L4
+	.quad	.L4
+	.quad	.L4
+	.quad	.L4
+	.quad	.L4
+	.quad	.L4
+	.quad	.L4
+	.quad	.L7
+	.quad	.L7
+	.quad	.L4
+	.quad	.L4
+	.quad	.L4
+	.quad	.L4
+	.quad	.L4
+	.quad	.L7
+	.quad	.L4
+	.quad	.L4
+	.quad	.L4
+	.quad	.L4
+	.quad	.L4
+	.quad	.L4
+	.quad	.L8
+	.text
+.L7:
+	movl	$10, %eax
+	jmp	.L9
+.L5:
+	movl	$11, %eax
+	jmp	.L9
+.L8:
+	movl	$-2, %eax
+	jmp	.L9
+.L4:
+	movq	-24(%rbp), %rax
+	movq	%rax, %rdi
+	call	atoi
+	movl	%eax, -4(%rbp)
+	cmpl	$0, -4(%rbp)
+	jle	.L10
+	cmpl	$10, -4(%rbp)
+	jle	.L11
+.L10:
 	movl	$-1, %eax
-	cmpl	$10, %ecx
-	cmovb	%edx, %eax
-	addq	$8, %rsp
-	.cfi_def_cfa_offset 8
+	jmp	.L9
+.L11:
+	movl	-4(%rbp), %eax
+.L9:
+	leave
+	.cfi_def_cfa 7, 8
 	ret
 	.cfi_endproc
-.LFE40:
+.LFE3:
 	.size	get_val, .-get_val
-	.p2align 4,,15
 	.globl	increment_count
 	.type	increment_count, @function
 increment_count:
-.LFB41:
+.LFB4:
 	.cfi_startproc
-	subl	$3, %esi
-	leal	1(%rdi), %eax
-	subl	$1, %edi
-	cmpl	$3, %esi
-	cmova	%edi, %eax
+	pushq	%rbp
+	.cfi_def_cfa_offset 16
+	.cfi_offset 6, -16
+	movq	%rsp, %rbp
+	.cfi_def_cfa_register 6
+	movl	%edi, -4(%rbp)
+	movl	%esi, -8(%rbp)
+	cmpl	$2, -8(%rbp)
+	jle	.L13
+	cmpl	$6, -8(%rbp)
+	jg	.L13
+	movl	-4(%rbp), %eax
+	addl	$1, %eax
+	jmp	.L14
+.L13:
+	movl	-4(%rbp), %eax
+	subl	$1, %eax
+.L14:
+	popq	%rbp
+	.cfi_def_cfa 7, 8
 	ret
 	.cfi_endproc
-.LFE41:
+.LFE4:
 	.size	increment_count, .-increment_count
-	.section	.rodata.str1.8,"aMS",@progbits,1
-	.align 8
+	.section	.rodata
 .LC3:
-	.string	"Couldn't understand that card name!"
-	.section	.rodata.str1.1
+	.string	"y: %i\n"
+	.align 8
 .LC4:
+	.string	"Couldn't understand that card name!"
+.LC5:
 	.string	"Current count: %i\n"
-	.section	.text.startup,"ax",@progbits
-	.p2align 4,,15
+	.text
 	.globl	main
 	.type	main, @function
 main:
-.LFB42:
+.LFB5:
 	.cfi_startproc
-	pushq	%rbx
+	pushq	%rbp
 	.cfi_def_cfa_offset 16
-	.cfi_offset 3, -16
-	xorl	%ebx, %ebx
-	subq	$16, %rsp
-	.cfi_def_cfa_offset 32
-	jmp	.L22
-	.p2align 4,,10
-	.p2align 3
-.L17:
-	cmpl	$-2, %eax
-	je	.L18
-	leal	1(%rbx), %edx
-	subl	$3, %eax
-	subl	$1, %ebx
-	cmpl	$3, %eax
-	movl	$.LC4, %esi
-	movl	$1, %edi
-	cmovbe	%edx, %ebx
-	xorl	%eax, %eax
-	movl	%ebx, %edx
-	call	__printf_chk
-.L18:
-	cmpb	$88, (%rsp)
-	je	.L27
-.L22:
-	movq	%rsp, %rdi
-	call	get_card_name
-	movq	%rsp, %rdi
-	call	get_val
-	cmpl	$-1, %eax
-	jne	.L17
+	.cfi_offset 6, -16
+	movq	%rsp, %rbp
+	.cfi_def_cfa_register 6
+	subq	$32, %rsp
+	movl	$5, -12(%rbp)
+	movl	-12(%rbp), %eax
+	addl	$1, %eax
+	movl	%eax, -8(%rbp)
+	movl	-8(%rbp), %eax
+	movl	%eax, %esi
 	movl	$.LC3, %edi
+	movl	$0, %eax
+	call	printf
+	movl	$0, -16(%rbp)
+.L19:
+	leaq	-32(%rbp), %rax
+	movq	%rax, %rdi
+	call	get_card_name
+	leaq	-32(%rbp), %rax
+	movq	%rax, %rdi
+	call	get_val
+	movl	%eax, -4(%rbp)
+	cmpl	$-1, -4(%rbp)
+	jne	.L16
+	movl	$.LC4, %edi
 	call	puts
-	cmpb	$88, (%rsp)
-	jne	.L22
-	.p2align 4,,10
-	.p2align 3
-.L27:
-	addq	$16, %rsp
-	.cfi_def_cfa_offset 16
-	xorl	%eax, %eax
-	popq	%rbx
-	.cfi_def_cfa_offset 8
+	jmp	.L17
+.L16:
+	cmpl	$-2, -4(%rbp)
+	jne	.L18
+	jmp	.L17
+.L18:
+	movl	-4(%rbp), %edx
+	movl	-16(%rbp), %eax
+	movl	%edx, %esi
+	movl	%eax, %edi
+	call	increment_count
+	movl	%eax, -16(%rbp)
+	movl	-16(%rbp), %eax
+	movl	%eax, %esi
+	movl	$.LC5, %edi
+	movl	$0, %eax
+	call	printf
+.L17:
+	movzbl	-32(%rbp), %eax
+	cmpb	$88, %al
+	jne	.L19
+	movl	$0, %eax
+	leave
+	.cfi_def_cfa 7, 8
 	ret
 	.cfi_endproc
-.LFE42:
+.LFE5:
 	.size	main, .-main
-	.globl	x
-	.data
-	.align 4
-	.type	x, @object
-	.size	x, 4
-x:
-	.long	5
 	.ident	"GCC: (Ubuntu 4.8.4-2ubuntu1~14.04.3) 4.8.4"
 	.section	.note.GNU-stack,"",@progbits

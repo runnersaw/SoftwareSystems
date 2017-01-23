@@ -4,8 +4,6 @@
 #define END_CHAR 'X'
 #define END_FLAG -2
 
-int x = 5;
-
 /*
 This function prompts the user for a card name,
 and will store it in the given card_name buffer.
@@ -66,6 +64,13 @@ int increment_count(int count, int val) {
   
 int main()
 {
+  // I can't really tell what the difference between this
+  // with and without optimization was.
+  int x = 5;
+  int y = x+1;
+
+  printf("y: %i\n", y);
+
   char card_name[3];
   int count = 0;
   do {
